@@ -1,0 +1,17 @@
+version: '2'
+services:
+  application:
+    build: .
+    depends_on:
+      - database
+    ports:
+      - "8080:8080"
+
+  database:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=mydb
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
