@@ -53,7 +53,7 @@ public class AccessService {
             UserSession session=new UserSession();
             session.setUserName(existingUser.get().getUserName());
             session.setToken(existingUser.get().getId().toString());
-
+            session.setId(existingUser.get().getId());
             UserSession val = sessionRepository.save(session);
             LoginResponse loginResponse = new LoginResponse();
             loginResponse.setAccessToken(val.getId().toString());

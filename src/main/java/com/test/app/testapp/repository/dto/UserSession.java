@@ -3,9 +3,10 @@ package com.test.app.testapp.repository.dto;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class UserSession {
+public class UserSession implements Serializable {
     @Id
     @GeneratedValue
     Integer id;
