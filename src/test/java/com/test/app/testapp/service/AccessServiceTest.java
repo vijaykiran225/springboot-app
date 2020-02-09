@@ -53,7 +53,7 @@ public class AccessServiceTest {
             session.setToken(token);
             Mockito.when(sessionRepository.findByToken(token))
                     .thenReturn(Optional.of(session));
-            Mockito.doNothing().when(sessionRepository).deleteByToken(token);
+            Mockito.doNothing().when(sessionRepository).deleteByToken(session);
 
             boolean logout = service.logout(token);
             assertTrue(logout);
@@ -117,6 +117,32 @@ public class AccessServiceTest {
             Mockito.when(
                     sessionRepository.save(Mockito.any(UserSession.class))
             ).thenReturn(session);
+            LoginRequest req=new LoginRequest(name,pd);
+            LoginResponse resp = service.login(req);
+            assertEquals(token,resp.getAccessToken());
+        } catch (Exception e) {
+            fail("Excpe not allowed here");
+        }
+
+    }
+
+    @Test
+    public void loginIdempotent() {
+        try {
+            String name="sample";
+            String pd="sample";
+            String token = "7c2c4c04-61de-499a-8226-16e08b1f91cb";
+
+            UserSession session = new UserSession();
+            session.setToken(token);
+            Mockito.when(userRepository.findByUserNameAndPassword(name,pd))
+                    .thenReturn(Optional.of(mockUser()));
+            Mockito.when(
+                    sessionRepository.save(Mockito.any(UserSession.class))
+            ).thenReturn(session);
+
+            Mockito.when(sessionRepository.findByUserName(name)).thenReturn(Optional.of(token));
+
             LoginRequest req=new LoginRequest(name,pd);
             LoginResponse resp = service.login(req);
             assertEquals(token,resp.getAccessToken());

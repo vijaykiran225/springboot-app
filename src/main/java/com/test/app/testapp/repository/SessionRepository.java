@@ -16,7 +16,7 @@ public class SessionRepository {
     private RedisTemplate redisTemplate;
 
     public Optional<UserSession> findByToken(String token) {
-        if(!StringUtils.isEmpty(token)) {
+        if(StringUtils.isEmpty(token)) {
             return Optional.empty();
         }
         HashOperations hashOperations = redisTemplate.opsForHash();
@@ -24,14 +24,26 @@ public class SessionRepository {
         return Optional.ofNullable(session);
     }
 
-    public void deleteByToken(String token) {
+    public void deleteByToken(UserSession session) {
         HashOperations hashOperations = redisTemplate.opsForHash();
-        hashOperations.delete("user", token);
+        hashOperations.delete("user", session.getToken());
+        hashOperations.delete("userName", session.getUserName());
+
     }
 
     public UserSession save(UserSession session) {
         HashOperations hashOperations = redisTemplate.opsForHash();
         hashOperations.put("user", session.getToken(), session);
+        hashOperations.put("userName", session.getUserName(), session.getToken());
         return session;
+    }
+
+    public Optional<String> findByUserName(String userName) {
+        if(StringUtils.isEmpty(userName)) {
+            return Optional.empty();
+        }
+        HashOperations hashOperations = redisTemplate.opsForHash();
+        String sessionToken = (String) hashOperations.get("userName", userName);
+        return Optional.ofNullable(sessionToken);
     }
 }

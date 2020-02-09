@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Transactional
 @Service
@@ -29,7 +31,7 @@ public class AccessService {
     public boolean logout(String token) throws InvalidUserException {
         Optional<UserSession> existingSession = sessionRepository.findByToken(token);
         if(existingSession.isPresent()){
-            sessionRepository.deleteByToken(existingSession.get().getToken());
+            sessionRepository.deleteByToken(existingSession.get());
             return true;
         }else {
             throw new InvalidUserException();
@@ -57,6 +59,14 @@ public class AccessService {
         if(!existingUser.isPresent()){
             throw new InvalidUserException();
         }else {
+            Optional<String> idempotency = sessionRepository.findByUserName(existingUser.get().getUserName());
+            if(idempotency.isPresent()){
+                Logger.getLogger("AccessService").log(Level.INFO,"Idempotent request");
+                LoginResponse loginResponse = new LoginResponse();
+                loginResponse.setAccessToken(idempotency.get());
+                return loginResponse;
+            }
+
             UserSession session=new UserSession();
             session.setUserName(existingUser.get().getUserName());
             session.setToken(UUID.randomUUID().toString());
