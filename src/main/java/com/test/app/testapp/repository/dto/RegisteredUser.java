@@ -13,15 +13,13 @@ public class RegisteredUser implements Serializable {
     private String userName;
     private String password;
     private String email;
-    private String token;
     public RegisteredUser() {
     }
 
-    public RegisteredUser(String userName, String password, String email, String token) {
+    public RegisteredUser(String userName, String password, String email) {
         this.userName = userName;
         this.password = password;
         this.email = email;
-        this.token = token;
     }
 
     public Integer getId() {
@@ -32,13 +30,6 @@ public class RegisteredUser implements Serializable {
         this.id = id;
     }
 
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
 
     public String getUserName() {
         return userName;

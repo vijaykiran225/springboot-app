@@ -1,5 +1,6 @@
 package com.test.app.testapp.service;
 
+import com.test.app.testapp.exceptions.InvalidDataException;
 import com.test.app.testapp.model.request.TaskRequest;
 import com.test.app.testapp.model.response.LogResponse;
 import com.test.app.testapp.model.response.TaskResponse;
@@ -8,6 +9,8 @@ import com.test.app.testapp.repository.dto.UserSession;
 import com.test.app.testapp.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.List;
@@ -20,7 +23,13 @@ public class OperationService {
     @Autowired
     private ActionLogService logService;
 
-    public TaskResponse execute(TaskRequest request, UserSession session){
+    public TaskResponse execute(TaskRequest request, UserSession session) throws InvalidDataException {
+
+        if (request == null
+                || StringUtils.isEmpty(request.getOperationType())
+                || CollectionUtils.isEmpty(request.getOperands())){
+            throw new InvalidDataException();
+        }
 
         if(request.getOperationType().equals("ADD")){
             long sum = request

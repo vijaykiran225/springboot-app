@@ -2,6 +2,7 @@ version: '2'
 services:
   application:
     build: .
+#    image: thegreatezio/spring-app:0.0.1-SNAPSHOT
     depends_on:
       - database
       - cache

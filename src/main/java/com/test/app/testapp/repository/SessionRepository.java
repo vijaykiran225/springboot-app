@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -15,6 +16,9 @@ public class SessionRepository {
     private RedisTemplate redisTemplate;
 
     public Optional<UserSession> findByToken(String token) {
+        if(!StringUtils.isEmpty(token)) {
+            return Optional.empty();
+        }
         HashOperations hashOperations = redisTemplate.opsForHash();
         UserSession session = (UserSession) hashOperations.get("user", token);
         return Optional.ofNullable(session);

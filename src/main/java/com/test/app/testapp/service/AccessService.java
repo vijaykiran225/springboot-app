@@ -41,9 +41,13 @@ public class AccessService {
             throw new UserAlreadyExistsException();
         }
 
-        RegisteredUser x=new RegisteredUser(request.getUserName(),request.getPassword(),request.getEmail(),null);
-        RegisteredUser u=userRepository.save(x);
-        return u!=null;
+        RegisteredUser entity=new RegisteredUser(request.getUserName(),request.getPassword(),request.getEmail());
+        try{
+            userRepository.save(entity);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
     }
 
     public LoginResponse login(LoginRequest request) throws InvalidUserException {
