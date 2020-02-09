@@ -14,21 +14,20 @@ public class SessionRepository {
     @Autowired
     private RedisTemplate redisTemplate;
 
-
-    public Optional<UserSession> findById(int id) {
+    public Optional<UserSession> findByToken(String token) {
         HashOperations hashOperations = redisTemplate.opsForHash();
-        UserSession x = (UserSession) hashOperations.get("user", id);
-        return Optional.ofNullable(x);
+        UserSession session = (UserSession) hashOperations.get("user", token);
+        return Optional.ofNullable(session);
     }
 
-    public void deleteById(Integer id) {
+    public void deleteByToken(String token) {
         HashOperations hashOperations = redisTemplate.opsForHash();
-        hashOperations.delete("user", id);
+        hashOperations.delete("user", token);
     }
 
     public UserSession save(UserSession session) {
         HashOperations hashOperations = redisTemplate.opsForHash();
-        hashOperations.put("user", session.getId(), session);
+        hashOperations.put("user", session.getToken(), session);
         return session;
     }
 }

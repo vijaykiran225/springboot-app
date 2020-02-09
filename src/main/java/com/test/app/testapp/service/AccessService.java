@@ -10,11 +10,14 @@ import com.test.app.testapp.repository.UserRepository;
 import com.test.app.testapp.repository.dto.RegisteredUser;
 import com.test.app.testapp.repository.dto.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
-@Component
+@Transactional
+@Service
 public class AccessService {
 
     @Autowired
@@ -24,9 +27,9 @@ public class AccessService {
     private UserRepository userRepository;
 
     public boolean logout(String token) throws InvalidUserException {
-        Optional<UserSession> existingSession = sessionRepository.findById(Integer.parseInt(token));
+        Optional<UserSession> existingSession = sessionRepository.findByToken(token);
         if(existingSession.isPresent()){
-            sessionRepository.deleteById(existingSession.get().getId());
+            sessionRepository.deleteByToken(existingSession.get().getToken());
             return true;
         }else {
             throw new InvalidUserException();
@@ -52,11 +55,11 @@ public class AccessService {
         }else {
             UserSession session=new UserSession();
             session.setUserName(existingUser.get().getUserName());
-            session.setToken(existingUser.get().getId().toString());
+            session.setToken(UUID.randomUUID().toString());
             session.setId(existingUser.get().getId());
             UserSession val = sessionRepository.save(session);
             LoginResponse loginResponse = new LoginResponse();
-            loginResponse.setAccessToken(val.getId().toString());
+            loginResponse.setAccessToken(val.getToken());
             return loginResponse;
         }
     }

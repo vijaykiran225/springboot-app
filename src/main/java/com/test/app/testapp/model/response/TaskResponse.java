@@ -2,7 +2,7 @@ package com.test.app.testapp.model.response;
 
 public class TaskResponse {
 
-    String output;
+    private String output;
 
     public TaskResponse() {
     }

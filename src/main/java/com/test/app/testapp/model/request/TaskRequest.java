@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskRequest {
-    String operationType;
-    List<String> operands = new ArrayList<>();
+    private String operationType;
+    private List<String> operands = new ArrayList<>();
 
     public TaskRequest(String operationType, List<String> operands) {
         this.operationType = operationType;

@@ -9,9 +9,9 @@ import java.io.Serializable;
 public class UserSession implements Serializable {
     @Id
     @GeneratedValue
-    Integer id;
-    String userName;
-    String token;
+    private Integer id;
+    private String userName;
+    private String token;
 
     public Integer getId() {
         return id;

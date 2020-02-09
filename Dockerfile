@@ -1,4 +1,4 @@
 FROM openjdk:8-jre
-ADD target/test-app-0.0.1-SNAPSHOT.jar test-app.jar
+ADD target/spring-app.jar spring-app.jar
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","test-app.jar"]
+ENTRYPOINT ["java","-jar","spring-app.jar"]

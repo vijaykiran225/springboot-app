@@ -1,21 +1,19 @@
 package com.test.app.testapp.repository.dto;
 
-import com.test.app.testapp.model.request.RegistrationRequest;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 @Entity
-public class RegisteredUser {
+public class RegisteredUser implements Serializable {
     @Id
     @GeneratedValue
-    Integer id;
-    String userName;
-    String password;
-    String email;
-    String token;
-
+    private Integer id;
+    private String userName;
+    private String password;
+    private String email;
+    private String token;
     public RegisteredUser() {
     }
 

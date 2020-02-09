@@ -1,9 +1,9 @@
 package com.test.app.testapp.model.response;
 
 public class LoginResponse {
-    String accessToken;
-    String errorMessage;
-    String expiryTime;
+    private String accessToken;
+    private String errorMessage;
+    private String expiryTime;
 
     public String getExpiryTime() {
         return expiryTime;

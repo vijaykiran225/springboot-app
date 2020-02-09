@@ -2,9 +2,9 @@ package com.test.app.testapp.model.request;
 
 public class RegistrationRequest {
 
-    String userName;
-    String password;
-    String email;
+    private String userName;
+    private String password;
+    private String email;
 
     public String getEmail() {
         return email;
